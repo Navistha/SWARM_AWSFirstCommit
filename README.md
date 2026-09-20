@@ -143,4 +143,4 @@ This project was built with the help of **Claude** (Anthropic) for architecture 
 
 ## Team
 
-Built by Navistha Pandey and [Teammate Name] for AWS First Commit 2026.
+Built by Navistha Pandey and Ritishka Sharma for AWS First Commit 2026.
