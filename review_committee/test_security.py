@@ -22,7 +22,7 @@ def get_user(username):
     return cursor.fetchone()
 """
 
-agent = build_security_agent(model_id="llama3.1:8b")
+agent = build_security_agent(model_id="llama3.2:3b")
 
 print("=== Vulnerable snippet (SQL injection) ===")
 result1 = review(agent, VULNERABLE_CODE, "security")

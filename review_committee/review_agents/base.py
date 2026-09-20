@@ -20,15 +20,22 @@ def build_reviewer_agent(name: str, system_prompt: str, output_model: type[BaseM
         structured_output_model=output_model,
         callback_handler=None,
     )
-def review(agent: Agent, code: str, agent_key: str) -> BaseModel:
+
+
+def review(agent: Agent, code: str, agent_key: str, max_retries: int = 3) -> BaseModel:
     prompt = (
         "Review the following code snippet. Set `agent` in your response to "
         f'"{agent_key}". Only comment on what your role covers -- ignore anything '
         "outside your lane, even if you notice it.\n\n"
         f"```\n{code}\n```"
     )
-    result = agent(prompt)
-    review_result = result.structured_output
-    if review_result is None:
-        raise RuntimeError(f"{agent_key} reviewer did not return structured output: {result}")
-    return review_result
+    last_error = None
+    for attempt in range(max_retries):
+        try:
+            result = agent(prompt)
+            review_result = result.structured_output
+            if review_result is not None:
+                return review_result
+        except Exception as e:
+            last_error = e
+    raise RuntimeError(f"{agent_key} reviewer failed after {max_retries} attempts: {last_error}")

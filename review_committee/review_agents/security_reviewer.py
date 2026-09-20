@@ -33,3 +33,8 @@ from .base import build_reviewer_agent
 def build_security_agent(model_id: str | None = None):
     kwargs = {"model_id": model_id} if model_id else {}
     return build_reviewer_agent("security-reviewer", SYSTEM_PROMPT, SecurityReview, **kwargs)
+
+from .base import review
+
+def review_security(agent, code: str):
+    return review(agent, code, AGENT_KEY)
